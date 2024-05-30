@@ -5,6 +5,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 
 import userRoutes from "./routes/userRoute.js"
 import uploadRoutes from "./routes/uploadRoute.js"
+import addRoutes from "./routes/addRoute.js"
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -20,6 +21,7 @@ app.use(cookieParser()); // Access cookies
 // Setting up routes
 app.use("/api/auth", userRoutes);
 app.use("/api", uploadRoutes);
+app.use("/api/query",addRoutes);
 
 // Start the server and connect to MongoDB
 app.listen(PORT, () => {
