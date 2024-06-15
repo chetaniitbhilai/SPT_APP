@@ -1,20 +1,25 @@
 import React from 'react';
 import './Login.css';
 import { useRef } from 'react';
+import useLogin from '../../hooks/useLogin';
 
-const Login = ({verifyLogin}) => {
+// const Login = ({verifyLogin}) => {
+const Login = () => {
   const [activeTab, setActiveTab] = React.useState('login');
+  const {loading,login} =useLogin()
   const emailref=useRef();
   const passwordref=useRef();
-  const handlesubmit=(e)=>{
+  const handlesubmit= async(e)=>{
     e.preventDefault;
     const email=emailref.current.value;
     const password=passwordref.current.value;
-    const details={
-      email:email,
-      password:password
-    };
-    verifyLogin(details);
+    // const details={
+    //   email:email,
+    //   password:password
+    // };
+    // verifyLogin(details);
+    await login(email,password)
+    
     emailref.current.value="";
     passwordref.current.value="";
   }
