@@ -8,6 +8,7 @@ const Splash = ({navigation}) => {
         setTimeout(() => {
           // Navigate to the main screen or any other screen after the splash screen
         //   navigation.replace('Welcome');
+        navigation.navigate('List');
         }, 1000); // Adjust the duration as needed
       }, []);
     

@@ -4,6 +4,7 @@
   import { NavigationContainer } from "@react-navigation/native";
   import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Splash from './Screens/splash';
+import List from './components/List';
 
   const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ import Splash from './Screens/splash';
               headerShown: false,
             }}
           />
+           <Stack.Screen name="List" component={List} />
         </Stack.Navigator>
       </NavigationContainer>
     );
