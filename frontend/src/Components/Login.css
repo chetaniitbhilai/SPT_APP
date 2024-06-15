@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: #98c1d9;
+}
+
+.form-wrapper {
+  background: #333;
+  border-radius: 15px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  position: absolute;
+  top: -40px;
+  left: calc(50% - 40px);
+}
+
+.tab {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.2em;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background: #555;
+  color: #fff;
+  font-size: 1em;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 5px;
+  background: #50b16b;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #45a163;
+}
+
+.link {
+  color: #aaa;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
