@@ -1,7 +1,5 @@
 import Data from "../models/data.model.js";
 
-
-
 export const addData = async (req, res) => {
     try {
         const { personName,companyName,hrName,hrNumber, hrEmail,response,dateTime,department }  = req.body;
