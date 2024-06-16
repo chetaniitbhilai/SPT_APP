@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
 
-export default function List() {
+export default function VolunteerList() {
   const users = [
     { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
     { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
@@ -10,14 +10,17 @@ export default function List() {
     { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
     { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
     { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
+    { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
+    { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
   
   ];
 
   return (
-    <View style={styles.container}>
-        <View>
-            <Text style={styles.heading}>Student Placement Team</Text>
-        </View>
+    <ScrollView >
+        <View style={styles.icon}>
+      <View>
+        <Text style={styles.heading}>Student Placement Team</Text>
+      </View>
       <FlatList 
         data={users}
         keyExtractor={(item, index) => index.toString()}
@@ -32,9 +35,11 @@ export default function List() {
           </View>
         )}
       />
-    </View>
+      </View>
+    </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

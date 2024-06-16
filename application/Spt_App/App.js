@@ -4,7 +4,8 @@
   import { NavigationContainer } from "@react-navigation/native";
   import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Splash from './Screens/splash';
-import List from './components/List';
+import Tabs from './components/tabs';
+import VolunteerList from './Screens/volunteerList';
 
   const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,15 @@ import List from './components/List';
               headerShown: false,
             }}
           />
-           <Stack.Screen name="List" component={List} />
+           <Stack.Screen name="VolunteerList" component={VolunteerList} />
+
+           <Stack.Screen
+          name="Tabs"
+          component={Tabs}
+          options={{
+            headerShown: false,
+          }}
+        />
         </Stack.Navigator>
       </NavigationContainer>
     );
