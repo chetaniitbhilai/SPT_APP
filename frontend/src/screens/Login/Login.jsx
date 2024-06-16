@@ -18,6 +18,7 @@ const Login = () => {
     //   password:password
     // };
     // verifyLogin(details);
+    console.log(email,password);
     await login(email,password)
     
     emailref.current.value="";
