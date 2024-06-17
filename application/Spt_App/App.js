@@ -6,6 +6,7 @@
 import Splash from './Screens/splash';
 import Tabs from './components/tabs';
 import VolunteerList from './Screens/volunteerList';
+import Login from './Screens/login';
 
   const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,13 @@ import VolunteerList from './Screens/volunteerList';
               headerShown: false,
             }}
           />
-           <Stack.Screen name="VolunteerList" component={VolunteerList} />
+           <Stack.Screen 
+           name="VolunteerList" 
+           component={VolunteerList} 
+           options={{
+            headerShown: false,
+          }}
+           />
 
            <Stack.Screen
           name="Tabs"
@@ -29,6 +36,15 @@ import VolunteerList from './Screens/volunteerList';
             headerShown: false,
           }}
         />
+
+          <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
