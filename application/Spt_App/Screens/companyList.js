@@ -1,10 +1,10 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import {View,Text} from 'react-native'
 
 const CompanyList = () => {
   return (
     <View>
-        <Text>Company List</Text>
+      <Text>TABLE</Text>
     </View>
   )
 }

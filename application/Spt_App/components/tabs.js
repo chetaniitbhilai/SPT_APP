@@ -5,8 +5,10 @@ import { MaterialIcons, AntDesign, FontAwesome, FontAwesome5, FontAwesome6, Ioni
 import CompanyList from '../Screens/companyList';
 import Task from '../Screens/task';
 import VolunteerList from '../Screens/volunteerList';
-import Notification from '../Screens/notification';
+import { Fontisto } from '@expo/vector-icons';
 import Profile from '../Screens/profile';
+import Email from '../Screens/email';
+import TaskVolunteer from '../Screens/taskVolunteer';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +32,7 @@ const Tabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Task"
         component={Task}
         options={{
@@ -46,7 +48,26 @@ const Tabs = () => {
             />
           ),
         }}
+      /> */}
+
+      <Tab.Screen
+        name="Task"
+        component={TaskVolunteer}
+        options={{
+          tabBarLabelStyle: {
+            marginTop: -5,
+            fontSize: 12,
+          },
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome5 name="tasks" 
+            size={focused?24:16} 
+            color={focused?"blue":"gray"} 
+            style={styles.icon}
+            />
+          ),
+        }}
       />
+
       <Tab.Screen
         name="Volunteer List"
         component={VolunteerList}
@@ -64,16 +85,17 @@ const Tabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
-        name="Notification"
-        component={Notification}
+        name="Email"
+        component={Email}
         options={{
           tabBarLabelStyle: {
             marginTop: -5,
             fontSize: 12,
           },
           tabBarIcon: ({ focused }) => (
-            <Feather name="bell" 
+            <Fontisto name="email" 
             size={focused?24:16} 
             color={focused?"blue":"gray"} 
             style={styles.icon}
@@ -81,6 +103,7 @@ const Tabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={Profile}

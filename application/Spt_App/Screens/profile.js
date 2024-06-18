@@ -23,9 +23,16 @@ const Profile = () => {
       <Text style={styles.responsibilities}>
         Manage Student data
         </Text>
-      <Text style={styles.responsibilitiesdecription}>
+        <Text style={styles.responsibilitiesdecription}>
         Assit students in finding job oppurtunities.
       </Text>
+      <Text style={styles.contact}>
+        Contacts
+      </Text>
+      <Text style={styles.contactdecription}>
+        You have 2 assigned Contacts.
+      </Text>
+      
       <View style={styles.buttonContainer}>
         <Button
           title="VIEW CONTACTS"
@@ -64,6 +71,12 @@ const styles = StyleSheet.create({
   responsibilitiesdecription:{
     fontSize:12,
     color:"gray"
+  },
+  contact:{
+    marginTop:20,
+    marginBottom:20,
+    fontSize:20,
+    fontWeight:'bold',
   },
   avatar: {
     marginBottom: 40,
