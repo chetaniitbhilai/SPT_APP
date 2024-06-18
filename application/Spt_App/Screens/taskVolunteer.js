@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Modal, ToastAndroid } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const CompanyCarousel = () => {
+const TaskVolunteer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [callRemark, setCallRemark] = useState('');
   const [mailRemark, setMailRemark] = useState('');
@@ -169,7 +169,7 @@ const CompanyCarousel = () => {
   );
 };
 
-export default CompanyCarousel;
+export default TaskVolunteer;
 
 const styles = StyleSheet.create({
   safeArea: {
