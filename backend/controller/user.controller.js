@@ -44,21 +44,20 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const {username,password} = req.body;
-        const user = await User.findOne({username});
+        const {email,password} = req.body;
+        const user = await User.findOne({email});
         const isPasswordCorrect=await bcryptjs.compare(password,user?.password || ""); // if user doesn't exist then use empty string to compare 
-
+        console.log(email,password);
 
         if(!user || !isPasswordCorrect){
-            return res.status(400).json({error:"Invalid username or password"});
+            return res.status(400).json({error:"Invalid email or password"});
         }
         generateTokenAndSetCookie(user._id,res);
 
         res.status(200).json({
             _id:user._id,
-            fullName:user.fullName,
-            username:user,username,
-            profilePic: user.profilePic,
+            email:user.email,
+            password:user.password,
         });
 
     } catch (error) {
