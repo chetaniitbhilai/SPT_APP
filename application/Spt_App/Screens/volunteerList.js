@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
 
-export default function VolunteerList() {
+export default function VolunteerList({data}) {
   const users = [
     { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
     { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },

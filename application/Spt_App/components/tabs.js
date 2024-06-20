@@ -32,7 +32,7 @@ const Tabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Task"
         component={Task}
         options={{
@@ -48,9 +48,9 @@ const Tabs = () => {
             />
           ),
         }}
-      />
+      /> */}
 
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Task"
         component={TaskVolunteer}
         options={{
@@ -66,7 +66,7 @@ const Tabs = () => {
             />
           ),
         }}
-      /> */}
+      />
 
       <Tab.Screen
         name="Volunteer List"

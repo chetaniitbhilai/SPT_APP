@@ -7,18 +7,40 @@ export default class CList extends Component {
     super(props);
     this.state = {
       tableHead: ['S. No.', 'Company Name', 'HR Name', 'HR Number', 'HR Email'],
-      tableData: [
-        ['1', 'HR John', 'HR Jo', '1234567890', 'john@example.com'],
-        ['2', 'Company B', 'HR Jane', '0987654321', 'jane@example.com'],
-        ['3', 'HR Jack', 'HR Jim', '5678901234', 'jack@example.com'],
-        ['4', 'Company D', 'HR Jill', '4321098765', 'jill@example.com'],
-        ['5', 'HR Jake', 'HR Jess', '9876543210', 'jake@example.com'],
-        ['6','','','',''],
-        ['7','','','',''],
-        ['8','','','',''],
-      ]
+      tableData: []
+    };
+    this.intervalId = null;
+  }
+
+  componentDidMount() {
+    this.fetchHRData();
+    this.intervalId = setInterval(this.fetchHRData, 1000); // Fetch data every 10 seconds
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId); // Clear interval on component unmount
+  }
+
+  fetchHRData = async () => {
+    try {
+      const response = await fetch('http://192.168.1.103:5000/api/getcdb'); // Replace with your backend URL
+      const hrData = await response.json();
+
+      // Format the data as needed for the table
+      const formattedData = hrData.map((hr, index) => [
+        (index + 1).toString(), // S. No.
+        hr.HRcompany,
+        hr.HRname,
+        hr.HRphone,
+        hr.HRemail
+      ]);
+
+      this.setState({ tableData: formattedData });
+    } catch (error) {
+      console.error('Error fetching HR data: ', error);
     }
   }
+
 
   render() {
     const state = this.state;

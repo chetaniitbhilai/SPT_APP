@@ -16,6 +16,8 @@ export const addData = async (req, res) => {
             department
         });
 
+        await newQuery.save();
+
         if(newQuery){
             res.status(201).json({
                 _id: newQuery._id,
