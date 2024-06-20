@@ -1,9 +1,56 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Text, View,ScrollView,StyleSheet ,SafeAreaView } from 'react-native'
 import { Avatar, Button } from 'react-native-elements';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
+  const [userData, setUserData] = useState({
+    name: '',
+    position: '',
+    responsibility: '',
+    // contacts: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cookie = await AsyncStorage.getItem('cookie');
+        if (!cookie) {
+          throw new Error('No cookie found');
+        }
+        
+
+
+        const res = await fetch('http://192.168.1.103:5000/api/auth/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'cookie': cookie, // Use the cookie directly if it's formatted correctly
+          },
+        });
+  
+        const data = await res.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+  
+        setUserData({
+          name: data.name,
+          position: data.position,
+          responsibility: data.responsibility,
+          // contacts: data.contacts,
+        });
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
     <ScrollView >
@@ -16,12 +63,12 @@ const Profile = () => {
         }}
         containerStyle={styles.avatar}
       />
-      <Text style={styles.name}>Parth Sarwade</Text>
-      <Text style={styles.position}>Placement Coordinator(UG)</Text>
+      <Text style={styles.name}>{userData.name}</Text>
+      <Text style={styles.position}>{userData.position}</Text>
       <Text style={styles.position}>Student Placement Cell</Text>
       <Text style={styles.header}>Responsibilities</Text>
       <Text style={styles.responsibilities}>
-        Manage Student data
+        {userData.responsibility}
         </Text>
         <Text style={styles.responsibilitiesdecription}>
         Assit students in finding job oppurtunities.

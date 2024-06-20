@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, SafeAreaView, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -19,8 +20,35 @@ const Login = ({ navigation }) => {
         throw new Error(data.error);
       }
 
+      const cookie = res.headers.get('set-cookie'); // 'set-cookie' should be lowercase
+      if (cookie) {
+        // Storing cookie in AsyncStorage
+        const stringifiedCookie = JSON.stringify(cookie);
+        console.log(stringifiedCookie);
+        // ToastAndroid.showWithGravity(
+        //   `This cookie is ${stringifiedCookie} `, 
+        //   ToastAndroid.SHORT,
+        //   ToastAndroid.BOTTOM,
+        // );
+        console.log(res.data);
+        await AsyncStorage.setItem('cookie', stringifiedCookie);
+        await AsyncStorage.setItem("userId",data._id);
+        await AsyncStorage.setItem('email',data.email);
+
+        const emailrece=await AsyncStorage.getItem("email");
+        console.log(emailrece)
+
+        ToastAndroid.showWithGravity(
+          `This email is ${emailrece} `, 
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+
+        navigation.navigate("Tabs");
+      }
+
       // Successful login
-      navigation.navigate("Tabs");
+      // navigation.navigate("Tabs");
     } catch (error) {
       setError(error.message);
       console.log("Error during login:", error.message);

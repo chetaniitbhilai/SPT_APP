@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text ,Alert } from 'react-native';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 export default class CList extends Component {
@@ -14,7 +14,7 @@ export default class CList extends Component {
 
   componentDidMount() {
     this.fetchHRData();
-    this.intervalId = setInterval(this.fetchHRData, 1000); // Fetch data every 10 seconds
+    this.intervalId = setInterval(this.fetchHRData, 1000); // Fetch data every 1 seconds
   }
 
   componentWillUnmount() {
@@ -23,7 +23,7 @@ export default class CList extends Component {
 
   fetchHRData = async () => {
     try {
-      const response = await fetch('http://192.168.1.103:5000/api/getcdb'); // Replace with your backend URL
+      const response = await fetch('http://192.168.1.103:5000/api/getcdb'); // Replace with your computer IP
       const hrData = await response.json();
 
       // Format the data as needed for the table

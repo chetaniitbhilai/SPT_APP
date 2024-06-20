@@ -9,6 +9,18 @@ const userSchema = new mongoose.Schema({
     password: {
       type: String, 
       required: true
+    },
+    name:{
+      type: String, 
+      required: true
+    },
+    position:{
+      type: String, 
+      required: true
+    },
+    responsibility:{
+      type: String, 
+      required: true
     }
   });
   
