@@ -4,7 +4,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
     try {
-        const { email, password, confirmPassword , name , position,responsibility } = req.body;
+        const { email, password, confirmPassword , name , position,responsibility  } = req.body;
 
         if (password !== confirmPassword) {
             return res.status(400).json({ error: "Password don't match." });
@@ -24,7 +24,8 @@ export const signup = async (req, res) => {
             password:hashedPassword,
             name,
             position,
-            responsibility
+            responsibility,
+            department
         });
         // generate JWT tokens 
 
@@ -38,7 +39,7 @@ export const signup = async (req, res) => {
                 email: newUser.email,
                 name:newUser.name,
                 position:newUser.position,
-                responsibility:newUser.responsibility
+                responsibility:newUser.responsibility,
             });
         }
 
