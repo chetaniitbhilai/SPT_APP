@@ -4,7 +4,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
     try {
-        const { email, password, confirmPassword , name , position,responsibility  } = req.body;
+        const { email, password, confirmPassword , name , position,responsibility ,department} = req.body;
 
         if (password !== confirmPassword) {
             return res.status(400).json({ error: "Password don't match." });
@@ -40,6 +40,8 @@ export const signup = async (req, res) => {
                 name:newUser.name,
                 position:newUser.position,
                 responsibility:newUser.responsibility,
+
+                department:newUser.department
             });
         }
 

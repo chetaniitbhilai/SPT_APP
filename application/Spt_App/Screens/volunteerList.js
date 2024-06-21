@@ -1,86 +1,119 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, ScrollView, StyleSheet, FlatList, Image, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function VolunteerList({data}) {
-  const users = [
-    { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-    { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", Discipline: "CSE Discipline", imageUrl: require('../assets/user.png') },
-  
-  ];
+const VolunteerList = () => {
+  const [department, setDepartment] = useState('');
+  const [volunteers, setVolunteers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cookie = await AsyncStorage.getItem('cookie');
+        if (!cookie) {
+          throw new Error('No cookie found');
+        }
+
+        // Fetch user details
+        const userRes = await fetch('http://192.168.1.36:8081/api/auth/volunteers', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'cookie': cookie,
+          },
+        });
+
+        const userData = await userRes.json();
+        if (userData.error) {
+          throw new Error(userData.error);
+        }
+
+        setDepartment(userData.department);
+
+        // Fetch all users (assuming it's from your backend or local data)
+        const allUsers = [
+          { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Mohit Thakre", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+        ];
+
+        // Filter users based on the logged-in user's department
+        const filteredUsers = allUsers.filter(user => user.department === userData.department);
+        setVolunteers(filteredUsers);
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <ScrollView >
-        <View style={styles.icon}>
-      <View>
-        <Text style={styles.heading}>Student Placement Team</Text>
-      </View>
-      <FlatList 
-        data={users}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Image source={item.imageUrl} style={styles.image} />
-            <View style={styles.textContainer}>
-              <Text style={styles.boldText}> {item.name}</Text>
-              <Text style={styles.item}>{item.post}</Text>
-              <Text style={styles.item}>{item.Discipline}</Text>
+    <ScrollView>
+      <View style={styles.icon}>
+        <View>
+          <Text style={styles.heading}>Student Placement Team</Text>
+        </View>
+        <FlatList
+          data={volunteers}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.itemContainer}>
+              <Image source={item.imageUrl} style={styles.image} />
+              <View style={styles.textContainer}>
+                <Text style={styles.boldText}> {item.name}</Text>
+                <Text style={styles.item}>{item.post}</Text>
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
       </View>
     </ScrollView>
   );
-}
+};
 
+export default VolunteerList;
 
 const styles = StyleSheet.create({
-  container: {
+  icon: {
     flex: 1,
+    padding: 20,
   },
-  heading:{
-    
-    height: 50,
-    backgroundColor:'#1FF2E1',
-    fontSize: 25,
+  heading: {
+    fontSize: 24,
     fontWeight: 'bold',
-    textAlign:'center',
-    padding: 6,
-    
-
+    marginBottom: 20,
+    textAlign: 'center',
   },
   itemContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f9f9f9',
-    borderBottomWidth: 1,
-    padding: 16,
+    marginBottom: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
   },
   image: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    marginRight: 16,
+    marginRight: 10,
   },
   textContainer: {
-    flex: 1,
-    flexDirection: 'column',
+    justifyContent: 'center',
   },
   boldText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'black',
+    marginBottom: 5,
   },
   item: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: 'green',
+    fontSize: 16,
+    color: '#888',
   },
 });
