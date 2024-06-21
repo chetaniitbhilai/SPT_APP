@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     responsibility:{
       type: String, 
       required: true
+    },
+    department:{
+      type:String,
+      required:true
     }
   });
   
