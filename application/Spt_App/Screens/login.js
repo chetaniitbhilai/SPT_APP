@@ -9,37 +9,38 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://192.168.1.103:5000/api/auth/login", { //put your laptop ip address
+      const res = await fetch("http://192.168.1.12:5000/api/auth/login", { // Ensure this IP is correct
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
+
+      console.log(res);
+
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
 
       const data = await res.json();
       if (data.error) {
         throw new Error(data.error);
       }
 
-      const cookie = res.headers.get('set-cookie'); // 'set-cookie' should be lowercase
+      const cookie = res.headers.get('set-cookie'); // Ensure header name is correct
       if (cookie) {
         // Storing cookie in AsyncStorage
         const stringifiedCookie = JSON.stringify(cookie);
         console.log(stringifiedCookie);
-        // ToastAndroid.showWithGravity(
-        //   `This cookie is ${stringifiedCookie} `, 
-        //   ToastAndroid.SHORT,
-        //   ToastAndroid.BOTTOM,
-        // );
-        console.log(res.data);
-        await AsyncStorage.setItem('cookie', stringifiedCookie);
-        await AsyncStorage.setItem("userId",data._id);
-        await AsyncStorage.setItem('email',data.email);
 
-        const emailrece=await AsyncStorage.getItem("email");
-        console.log(emailrece)
+        await AsyncStorage.setItem('cookie', stringifiedCookie);
+        await AsyncStorage.setItem("userId", data._id);
+        await AsyncStorage.setItem('email', data.email);
+
+        const emailrece = await AsyncStorage.getItem("email");
+        console.log(emailrece);
 
         ToastAndroid.showWithGravity(
-          `This email is ${emailrece} `, 
+          `This email is ${emailrece} `,
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );
@@ -47,8 +48,6 @@ const Login = ({ navigation }) => {
         navigation.navigate("Tabs");
       }
 
-      // Successful login
-      // navigation.navigate("Tabs");
     } catch (error) {
       setError(error.message);
       console.log("Error during login:", error.message);

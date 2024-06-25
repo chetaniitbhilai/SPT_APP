@@ -40,7 +40,6 @@ export const signup = async (req, res) => {
                 name:newUser.name,
                 position:newUser.position,
                 responsibility:newUser.responsibility,
-
                 department:newUser.department
             });
         }

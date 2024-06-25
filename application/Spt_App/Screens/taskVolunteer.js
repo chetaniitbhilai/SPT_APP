@@ -1,8 +1,19 @@
-// src/CompanyCarousel.js
-
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Modal, ToastAndroid } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Modal,
+  ToastAndroid,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TaskVolunteer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,41 +23,114 @@ const TaskVolunteer = () => {
   const [inputMailRemark, setInputMailRemark] = useState('');
   const [showMailRemarkModal, setShowMailRemarkModal] = useState(false);
   const [selectedMailTemplate, setSelectedMailTemplate] = useState('');
-
-  const companies = [
-    { id: '1', name: 'Google', hrname: 'Ayush', phone: '123-456-7890', email: 'contact@google.com' },
-    { id: '2', name: 'Apple', hrname: 'Bhoomi', phone: '987-654-3210', email: 'contact@apple.com' },
-    { id: '3', name: 'Microsoft', hrname: 'Anand', phone: '555-123-4567', email: 'contact@microsoft.com' },
-    { id: '4', name: 'Amazon', hrname: 'Chetan', phone: '444-555-6666', email: 'contact@amazon.com' },
-    { id: '5', name: 'Facebook', hrname: 'XYZ', phone: '777-888-9999', email: 'contact@facebook.com' },
-  ];
+  const [companies, setCompanies] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [companyId,setCompanyId]= useState('');
 
   const callRemarks = ['Answered', 'Interested', 'Did not pick'];
   const mailRemarks = ['Reply received', 'Awaiting reply', 'No response'];
 
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const cookie = await AsyncStorage.getItem('cookie');
+        if (!cookie) {
+          throw new Error('No cookie found');
+        }
+
+        const response = await fetch('http://192.168.1.12:5000/api/company/volunteer',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'cookie': cookie, // Use the cookie directly if it's formatted correctly
+          },
+        });
+
+        const data = await response.json();
+        setCompanies(data);
+        console.log(companies);
+      } catch (error) {
+        Alert.alert('Error', 'Failed to fetch companies');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  const getCurrentDateTimeString = () => {
+    const now = new Date();
+
+    const date = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    const formattedDate = `${month}/${date}/${year}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return `${formattedDate} ${formattedTime}`;
+  };
+
   const handleNext = () => {
     if (currentIndex < companies.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setCallRemark('');
-      setMailRemark('');
-      setInputCallRemark('');
-      setInputMailRemark('');
+      resetRemarks();
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setCallRemark('');
-      setMailRemark('');
-      setInputCallRemark('');
-      setInputMailRemark('');
+      resetRemarks();
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Call Remark:', callRemark || inputCallRemark);
-    console.log('Mail Remark:', mailRemark || inputMailRemark);
+  const resetRemarks = () => {
+    setCallRemark('');
+    setMailRemark('');
+    setInputCallRemark('');
+    setInputMailRemark('');
+  };
+
+  const handleSubmit = async () => {
+    const currentCompany = companies[currentIndex];
+    const dateTime = getCurrentDateTimeString();
+    console.log(currentCompany);
+    console.log(currentCompany._id);
+    setCompanyId(currentCompany._id);
+    try {
+      const result = await fetch(`http://192.168.1.12:5000/api/company/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          companyId,
+          callRemark,
+          mailRemark,
+          callTextRemark: inputCallRemark,
+          emailTextRemark: inputMailRemark,
+          status: 'Talked with',
+          dateTime,
+        }),
+      });
+      console.log(result);
+      Alert.alert('Success', 'Company status updated');
+
+      const updatedCompanies = companies.filter((_, index) => index !== currentIndex);
+      setCompanies(updatedCompanies);
+
+      if (updatedCompanies.length > 0) {
+        setCurrentIndex(0);
+        resetRemarks();
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update company status');
+    }
   };
 
   const handleMailNow = () => {
@@ -55,23 +139,47 @@ const TaskVolunteer = () => {
 
   const handleSendMail = (template) => {
     setSelectedMailTemplate(template);
-    console.log(template);
-    ToastAndroid.showWithGravity(
-        `Selected template is of ${template}`, 
+    if (Platform.OS === 'android') {
+      ToastAndroid.showWithGravity(
+        `Selected template is of ${template}`,
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
-    );
-    // setShowMailRemarkModal(false); // Close the mail remark modal after selecting and sending
+      );
+    } else {
+      Alert.alert('Mail Template Selected', `Selected template is of ${template}`);
+    }
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (companies.length === 0) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Text>No current companies assigned to you, take a short break.</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const currentCompany = companies[currentIndex];
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.card}>
-          <Text style={styles.companyName}>{companies[currentIndex].name}</Text>
-          <Text style={styles.companyInfo}>HR Name: {companies[currentIndex].hrname}</Text>
-          <Text style={styles.companyInfo}>Phone: {companies[currentIndex].phone}</Text>
-          <Text style={styles.companyInfo}>Email: {companies[currentIndex].email}</Text>
+          <Text style={styles.companyName}>{currentCompany.companyName}</Text>
+          <Text style={styles.companyInfo}>HR Name: {currentCompany.hrName}</Text>
+          <Text style={styles.companyInfo}>Phone: {currentCompany.hrPhone}</Text>
+          <Text style={styles.companyInfo}>Email: {currentCompany.hrEmail}</Text>
 
           <Text style={styles.label}>Call Remarks:</Text>
           <Picker
@@ -124,10 +232,18 @@ const TaskVolunteer = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handlePrevious} disabled={currentIndex === 0}>
+          <TouchableOpacity
+            style={[styles.button, currentIndex === 0 && styles.disabledButton]}
+            onPress={handlePrevious}
+            disabled={currentIndex === 0}
+          >
             <Text style={[styles.buttonText, currentIndex === 0 && styles.disabledText]}>Previous</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleNext} disabled={currentIndex === companies.length - 1}>
+          <TouchableOpacity
+            style={[styles.button, currentIndex === companies.length - 1 && styles.disabledButton]}
+            onPress={handleNext}
+            disabled={currentIndex === companies.length - 1}
+          >
             <Text style={[styles.buttonText, currentIndex === companies.length - 1 && styles.disabledText]}>Next</Text>
           </TouchableOpacity>
         </View>
@@ -150,8 +266,8 @@ const TaskVolunteer = () => {
                 <TouchableOpacity style={styles.mailTemplate} onPress={() => handleSendMail('Follow Up Mail')}>
                   <Text>Follow Up Mail</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.mailTemplate} onPress={() => handleSendMail('Comformation Mail')}>
-                  <Text>Comformation Mail</Text>
+                <TouchableOpacity style={styles.mailTemplate} onPress={() => handleSendMail('Confirmation Mail')}>
+                  <Text>Confirmation Mail</Text>
                 </TouchableOpacity>
               </ScrollView>
               <TouchableOpacity style={styles.sendButton} onPress={() => setShowMailRemarkModal(false)}>
@@ -233,7 +349,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
     borderRadius: 5,
     alignItems: 'center',
-    width: '48%', // Adjust width as needed
+    width: '48%',
   },
   actionButtonText: {
     color: '#FFFFFF',
@@ -286,8 +402,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  disabledButton: {
+    backgroundColor: '#AAAAAA',
+  },
   disabledText: {
-    color: '#AAAAAA',
+    color: '#DDDDDD',
   },
   submitButton: {
     backgroundColor: '#28a745',

@@ -2,7 +2,7 @@ import express from "express"
 import { login, logout, signup } from "../controller/user.controller.js";                        //.js is important here
 import {  getProfile } from "../controller/getProfile.controller.js";                             //.js is important here
 import {authenticate} from "../middleware/authenticate.js"
-// import { getVolunteer} from "../controller/getVolunteer.controller.js"      
+import { getVolunteer} from "../controller/getVolunteer.controller.js"      
 
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/profile", authenticate, getProfile);
-// router.get("/volunteer", authenticate, getVolunteer);
+router.get("/volunteer", authenticate, getVolunteer);
 
 export default router;

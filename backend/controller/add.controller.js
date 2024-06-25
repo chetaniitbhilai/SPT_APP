@@ -2,18 +2,22 @@ import Data from "../models/data.model.js";
 
 export const addData = async (req, res) => {
     try {
-        const { personName,companyName,hrName,hrNumber, hrEmail,response,dateTime,department }  = req.body;
+        const { personName,companyName,hrName,hrNumber, hrEmail,responsePhone,responsePhoneText,responseEmail,responseEmailText,dateTime,department,status }  = req.body;
 
-
+        
         const newQuery = new Data({
             personName,
             companyName,
             hrName,
             hrNumber, 
             hrEmail,
-            response,
+            responsePhone,
+            responsePhoneText,
+            responseEmail,
+            responseEmailText,
             dateTime,
-            department
+            department,
+            status
         });
 
         await newQuery.save();

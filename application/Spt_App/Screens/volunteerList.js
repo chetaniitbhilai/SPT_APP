@@ -15,7 +15,7 @@ const VolunteerList = () => {
         }
 
         // Fetch user details
-        const userRes = await fetch('http://192.168.1.36:8081/api/auth/volunteers', {
+        const userRes = await fetch('http://192.168.1.12:5000/api/auth/volunteers', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -32,8 +32,8 @@ const VolunteerList = () => {
 
         // Fetch all users (assuming it's from your backend or local data)
         const allUsers = [
-          { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
-          { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
+          { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", department: "MSME", imageUrl: require('../assets/user.png') },
+          { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", department: "MSME", imageUrl: require('../assets/user.png') },
           { name: "Anil Kumar", post: "Volunteer (MT Liasoning )", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
           { name: "Mohit Thakre", post: "Volunteer (Intership Cell)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
           { name: "Varun Rao", post: "Volunteer (DSAI Liasoning)", department: "CSE Discipline", imageUrl: require('../assets/user.png') },
