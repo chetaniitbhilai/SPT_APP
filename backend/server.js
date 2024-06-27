@@ -6,6 +6,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 
 import userRoutes from "./routes/userRoute.js";
 import addRoutes from "./routes/addRoute.js";
+import companyRoutes from "./routes/companyRoutes.js";
 import getCentralDatabaseRoutes from "./routes/getCentralDatabaseMobile.js";
 
 
@@ -33,6 +34,7 @@ app.use(cookieParser()); // Access cookies
 app.use("/api/auth", userRoutes);
 app.use("/api", getCentralDatabaseRoutes);
 app.use("/api/query", addRoutes);
+app.use("/api/company",companyRoutes);
 
 // Start the server and connect to MongoDB
 app.listen(PORT, () => {

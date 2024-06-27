@@ -12,7 +12,6 @@ export const getProfile = async (req, res) => {
       name: user.name,
       position: user.position,
       responsibility: user.responsibility,
-      // Add other fields as needed
     });
   } catch (error) {
     console.error('Error fetching profile:', error.message);
