@@ -1,22 +1,65 @@
-// src/SendEmail.js
-
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, TouchableOpacity, Alert, Linking } from 'react-native';
 
 const Email = () => {
   const [email, setEmail] = useState('');
+  const [email2, setEmail2] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [recipientEmail, setRecipientEmail] = useState('');
 
   const templates = [
     { id: 'template1', text: 'Template 1: Welcome Mail' },
-    { id: 'template2', text: 'Template 2: Follw up Mail' },
+    { id: 'template2', text: 'Template 2: Follow-up Mail' },
     { id: 'template3', text: 'Template 3: Confirmation Mail' },
   ];
 
+  useEffect(() => {
+    const fetchEmails = async () => {
+      try {
+        const response = await fetch('http://192.168.1.36:5000/api/auth/email', {
+          headers: {
+            Authorization: `Bearer YOUR_AUTH_TOKEN`, // Replace with your actual token handling
+          },
+        });
+        const data = await response.json();
+        console.log('Fetched emails:', data);
+        setEmail(data.email);
+        setEmail2(data.email_2);
+      } catch (error) {
+        console.error('Error fetching emails:', error);
+      }
+    };
+
+    fetchEmails();
+  }, []);
+
   const sendEmail = () => {
-    // Logic for sending email using the selected template
-    console.log('Sending email to:', email);
-    console.log('Selected template:', selectedTemplate);
+    let subject, body;
+    switch (selectedTemplate) {
+      case 'template1':
+        subject = 'Welcome Mail';
+        body = 'Welcome to our service!';
+        break;
+      case 'template2':
+        subject = 'Follow-up Mail';
+        body = 'Just following up on our previous conversation.';
+        break;
+      case 'template3':
+        subject = 'Confirmation Mail';
+        body = 'This is to confirm your recent transaction.';
+        break;
+      default:
+        Alert.alert('Error', 'Invalid template ID');
+        return;
+    }
+
+    const mailtoUrl = `mailto:${recipientEmail}?cc=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    Linking.openURL(mailtoUrl)
+      .then(() => console.log('Email app opened'))
+      .catch((error) => {
+        console.error('Error opening email app:', error);
+        Alert.alert('Error', 'Failed to open email app. Please try again later.');
+      });
   };
 
   return (
@@ -27,8 +70,8 @@ const Email = () => {
           style={styles.input}
           placeholder="Enter recipient's email"
           placeholderTextColor="gray"
-          value={email}
-          onChangeText={setEmail}
+          value={recipientEmail}
+          onChangeText={setRecipientEmail}
           keyboardType="email-address"
         />
         <View style={styles.templateContainer}>
@@ -46,7 +89,7 @@ const Email = () => {
             </TouchableOpacity>
           ))}
         </View>
-        <Button title="Send Email" onPress={sendEmail} disabled={!email || !selectedTemplate} />
+        <Button title="Send Email" onPress={sendEmail} disabled={!recipientEmail || !selectedTemplate} />
       </View>
     </SafeAreaView>
   );

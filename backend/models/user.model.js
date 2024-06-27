@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     department:{
       type:String,
       required:true
+    },
+    email_2: {
+      type: String, 
+      required: true
     }
   });
   
