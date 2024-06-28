@@ -25,7 +25,7 @@ export const getCompanies = async (req, res) => {
       _id: item._id,
       hrName: item.hrName,
       hrEmail: item.hrEmail,
-      hrPhone: item.hrPhone,
+      hrPhone: item.hrNumber,
       companyName: item.companyName
     }));
 

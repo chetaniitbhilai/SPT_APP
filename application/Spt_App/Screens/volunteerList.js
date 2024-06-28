@@ -15,7 +15,7 @@ const VolunteerList = () => {
         }
 
         // Fetch user details
-        const userRes = await fetch('http://192.168.1.36:5000/api/auth/volunteer', {
+        const userRes = await fetch('http://192.168.1.4:5000/api/auth/volunteer', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

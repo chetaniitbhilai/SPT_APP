@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Linking from 'react-native/Libraries/Linking/Linking';
 
 const TaskVolunteer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,7 +39,7 @@ const TaskVolunteer = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.1.36:5000/api/company/volunteer',{
+        const response = await fetch('http://192.168.1.4:5000/api/company/volunteer',{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ const TaskVolunteer = () => {
     console.log(currentCompany._id);
     setCompanyId(currentCompany._id);
     try {
-      const result = await fetch(`http://192.168.1.12:5000/api/company/update`, {
+      const result = await fetch(`http://192.168.1.4:5000/api/company/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,6 +136,16 @@ const TaskVolunteer = () => {
 
   const handleMailNow = () => {
     setShowMailRemarkModal(true);
+  };
+
+  const handleCall = () => {
+    const phoneNumber = currentCompany.hrPhone;
+    Linking.openURL(`tel:${phoneNumber}`)
+      .then(() => console.log('Calling', phoneNumber))
+      .catch((error) => {
+        console.error('Error opening phone dialer:', error);
+        Alert.alert('Error', 'Failed to open phone dialer. Please try again later.');
+      });
   };
 
   const handleSendMail = (template) => {
@@ -205,7 +216,7 @@ const TaskVolunteer = () => {
             <TouchableOpacity style={styles.actionButton} onPress={handleMailNow}>
               <Text style={styles.actionButtonText}>Mail Now</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Calling now...')}>
+            <TouchableOpacity style={styles.actionButton} onPress={handleCall}>
               <Text style={styles.actionButtonText}>Call Now</Text>
             </TouchableOpacity>
           </View>
