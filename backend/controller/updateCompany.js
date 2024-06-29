@@ -7,7 +7,8 @@ export const updateCompany = async (req, res) => {
 
   try {
     const company = await Data.findById(companyId);
-    console.log(company);
+    // console.log(company);
+    console.log(companyId+" "+callRemark+" "+  mailRemark+ " "+callTextRemark+ " "+  emailTextRemark+ " " +status+ " "+  dateTime)
 
     if (!company) {
       return res.status(404).json({ message: 'Company not found' });
