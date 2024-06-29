@@ -26,14 +26,29 @@ const TaskVolunteer = () => {
   const [selectedMailTemplate, setSelectedMailTemplate] = useState('');
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [email,setEmail]= useState("");
 
   const callRemarks = ['Answered', 'Interested', 'Did not pick'];
   const mailRemarks = ['Reply received', 'Awaiting reply', 'No response'];
+
+  const emailTemplates = {
+    template1: {
+      subject: 'Follow-up on our recent conversation',
+      body: 'Dear [HR Name],\n\nI hope this email finds you well. I wanted to follow up on our recent conversation regarding volunteer opportunities at [Company Name].\n\nBest regards,',
+    },
+    template2: {
+      subject: 'Volunteer Opportunities Inquiry',
+      body: 'Hi [HR Name],\n\nI am reaching out to inquire about volunteer opportunities at [Company Name]. I believe our collaboration could be beneficial for both parties.\n\nThank you,',
+    },
+  };
 
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
         const cookie = await AsyncStorage.getItem('cookie');
+        const email = await AsyncStorage.getItem('email'); // Fetch the logged-in user's email
+        setEmail(email || '');
+
         if (!cookie) {
           throw new Error('No cookie found');
         }
@@ -149,15 +164,37 @@ const TaskVolunteer = () => {
 
   const handleSendMail = (template) => {
     setSelectedMailTemplate(template);
-    if (Platform.OS === 'android') {
-      ToastAndroid.showWithGravity(
-        `Selected template is of ${template}`,
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
-    } else {
-      Alert.alert('Mail Template Selected', `Selected template is of ${template}`);
-    }
+    const { subject, body } = emailTemplates[template];
+    const currentCompany = companies[currentIndex];
+    const hrName = currentCompany.hrName;
+    const companyName = currentCompany.companyName;
+
+    const emailBody = body
+      .replace('[HR Name]', hrName)
+      .replace('[Company Name]', companyName)
+      ; // Replace 'Your Name' with actual user name if available
+
+    const mailtoUrl = `mailto:${currentCompany.hrEmail}?cc=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+
+    Linking.openURL(mailtoUrl)
+      .then(() => {
+        setShowMailRemarkModal(false);
+      })
+      .catch((error) => {
+        console.error('Error opening email client:', error);
+        Alert.alert('Error', 'Failed to open email client. Please try again later.');
+      });
+
+
+    // if (Platform.OS === 'android') {
+    //   ToastAndroid.showWithGravity(
+    //     `Selected template is of ${template}`,
+    //     ToastAndroid.SHORT,
+    //     ToastAndroid.BOTTOM,
+    //   );
+    // } else {
+    //   Alert.alert('Mail Template Selected', `Selected template is of ${template}`);
+    // }
   };
 
   if (loading) {
@@ -275,9 +312,9 @@ const TaskVolunteer = () => {
                 onValueChange={(itemValue) => handleSendMail(itemValue)}
               >
                 <Picker.Item label="Select a template" value="" />
-                <Picker.Item label="Template 1" value="Template 1" />
-                <Picker.Item label="Template 2" value="Template 2" />
-                <Picker.Item label="Template 3" value="Template 3" />
+                {Object.keys(emailTemplates).map((templateKey) => (
+                  <Picker.Item key={templateKey} label={templateKey} value={templateKey} />
+                ))}
               </Picker>
               <TouchableOpacity
                 style={styles.modalButton}
