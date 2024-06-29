@@ -1,55 +1,146 @@
-// src/ContactList.js
-
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView , ToastAndroid} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ToastAndroid, Alert } from 'react-native';
 import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Task = () => {
-  const [contacts, setContacts] = useState([
-    { id: '1', company: 'Google', name: 'John Doe', email: 'john.doe@example.com' },
-    { id: '2', company: 'Microsoft', name: 'Jane Smith', email: 'jane.smith@example.com' },
-    { id: '3', company: 'Twitter', name: 'Sam Johnson', email: 'sam.johnson@example.com' },
-    { id: '4', company: 'LinkedIn', name: 'Bhoomi', email: 'bhoomi@example.com' },
-    { id: '5', company: 'Oracle', name: 'Anand', email: 'anand@example.com' },
-    { id: '6', company: 'Meta', name: 'Chetan', email: 'chetan@example.com' },
-    { id: '7', company: 'Infosys', name: 'Ayush', email: 'ayush@example.com' },
-  ]);
-
-  const [volunteers] = useState([
-    { id: '1', name: 'Alice' },
-    { id: '2', name: 'Bob' },
-    { id: '3', name: 'Charlie' },
-  ]);
-
+  const [contacts, setContacts] = useState([]);
+  const [volunteers, setVolunteers] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const assignContact = (contactId,companyName) => {
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const cookie = await AsyncStorage.getItem('cookie');
+        if (!cookie) {
+          throw new Error('No cookie found');
+        }
+
+        const response = await fetch('http://192.168.1.4:5000/api/company/coordinator', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'cookie': cookie,
+          },
+        });
+
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        setContacts(data);
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
+    };
+
+    const fetchVolunteers = async () => {
+      try {
+        const cookie = await AsyncStorage.getItem('cookie');
+        if (!cookie) {
+          throw new Error('No cookie found');
+        }
+
+        const response = await fetch('http://192.168.1.4:5000/api/auth/volunteer', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'cookie': cookie,
+          },
+        });
+
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        setVolunteers(data.volunteers);
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
+    };
+
+    fetchContacts();
+    fetchVolunteers();
+  }, []);
+
+  const assignContact = (contactId, companyName) => {
     setSelectedContact(contactId);
     setModalVisible(true);
   };
 
-  const handleVolunteerSelection = (volunteerId,volunteerName,companyName) => {
-    console.log('Assigning contact with id:', selectedContact, 'to volunteer with id:', volunteerId);
-    ToastAndroid.showWithGravity(
-        `This company is assigned to volunteer ${volunteerName} `, 
+  const getCurrentDateTimeString = () => {
+    const now = new Date();
+
+    const date = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    const formattedDate = `${month}/${date}/${year}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return `${formattedDate} ${formattedTime}`;
+  };
+
+  const handleVolunteerSelection = async (volunteerId, volunteerName) => {
+    try {
+      const cookie = await AsyncStorage.getItem('cookie');
+      if (!cookie) {
+        throw new Error('No cookie found');
+      }
+      const dateTime = getCurrentDateTimeString();
+
+      const response = await fetch(`http://192.168.1.4:5000/api/company/assign`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'cookie': cookie,
+        },
+        body: JSON.stringify({ 
+          volunteerName,
+          selectedContact,
+          status:'assigned',
+          dateTime
+        }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setContacts(prevContacts =>
+        prevContacts.filter(contact => contact._id !== selectedContact)
+      );
+
+      ToastAndroid.showWithGravity(
+        `This company is assigned to volunteer ${volunteerName}`,
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
-    );
-    setModalVisible(false);
-    setSelectedContact(null);
+      );
+
+      setModalVisible(false);
+      setSelectedContact(null);
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   const renderItem = ({ item }) => (
     <View style={styles.contactItem}>
       <View style={styles.contactDetails}>
-        <Text style={styles.companyName}>{item.company}</Text>
-        <Text style={styles.contactName}>{item.name}</Text>
-        <Text style={styles.contactEmail}>{item.email}</Text>
+        <Text style={styles.companyName}>{item.companyName}</Text>
+        <Text style={styles.contactName}>{item.hrName}</Text>
+        <Text style={styles.contactEmail}>{item.hrEmail}</Text>
       </View>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.assignButton}
-        onPress={() => assignContact(item.id,item.company)}
+        onPress={() => assignContact(item._id, item.companyName)}
       >
         <Text style={styles.assignButtonText}>Assign Member</Text>
       </TouchableOpacity>
@@ -57,9 +148,9 @@ const Task = () => {
   );
 
   const renderVolunteerItem = ({ item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.volunteerItem}
-      onPress={() => handleVolunteerSelection(item.id,item.name)}
+      onPress={() => handleVolunteerSelection(item._id, item.name)}
     >
       <Text style={styles.volunteerName}>{item.name}</Text>
     </TouchableOpacity>
@@ -68,15 +159,17 @@ const Task = () => {
   return (
     <ScrollView>
       <View style={styles.safeArea}>
-        <Text style={styles.assignText}>
-          Assign Contacts
-        </Text>
-        <FlatList
-          data={contacts}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContainer}
-        />
+        <Text style={styles.assignText}>Assign Contacts</Text>
+        {contacts.length === 0 ? (
+          <Text style={styles.noContactsMessage}>Take a break. No contacts to assign.</Text>
+        ) : (
+          <FlatList
+            data={contacts}
+            renderItem={renderItem}
+            keyExtractor={item => item._id}
+            contentContainerStyle={styles.listContainer}
+          />
+        )}
       </View>
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
@@ -84,7 +177,7 @@ const Task = () => {
           <FlatList
             data={volunteers}
             renderItem={renderVolunteerItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
           />
           <TouchableOpacity
             style={styles.closeButton}
@@ -181,5 +274,11 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  noContactsMessage: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
+    color: 'gray',
   },
 });
