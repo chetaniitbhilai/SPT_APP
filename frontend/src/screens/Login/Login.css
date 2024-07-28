@@ -1,6 +1,9 @@
+/* Light mode styles
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #e0f7fa;
+  color: #00796b;
 }
 
 .container {
@@ -9,15 +12,16 @@ body {
   align-items: center;
   height: 100vh;
   width: 100%;
-  background-color: #98c1d9;
+  background-color: #e0f7fa;
 }
 
 .form-wrapper {
-  background: #333;
-  border-radius: 15px;
-  padding: 20px;
-  width: 300px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 40px;
+  width: 350px;
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -25,7 +29,7 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 3px solid #fff;
+  border: 3px solid #ffffff;
   position: absolute;
   top: -40px;
   left: calc(50% - 40px);
@@ -34,56 +38,189 @@ body {
 .tab {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .tab-button {
   background: none;
   border: none;
-  color: #aaa;
-  font-size: 1.2em;
-  margin: 0 10px;
+  color: #004d40;
+  font-size: 1em;
+  margin: 0 15px;
   cursor: pointer;
+  transition: color 0.3s, border-bottom 0.3s;
 }
 
 .tab-button.active {
-  color: #fff;
-  border-bottom: 2px solid #fff;
+  color: #00796b;
+  border-bottom: 2px solid #00796b;
 }
 
 .input {
   width: calc(100% - 20px);
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
+  padding: 12px;
+  margin: 15px 0;
+  border: 1px solid #b2dfdb;
   border-radius: 5px;
-  background: #555;
-  color: #fff;
+  background: #e0f2f1;
+  color: #004d40;
   font-size: 1em;
+  box-sizing: border-box;
+  transition: border 0.3s;
+}
+
+.input:focus {
+  border: 1px solid #00796b;
+  outline: none;
 }
 
 .button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 20px 0;
   border: none;
   border-radius: 5px;
-  background: #50b16b;
-  color: #fff;
+  background: #00796b;
+  color: #ffffff;
   font-size: 1em;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .button:hover {
-  background: #45a163;
+  background: #004d40;
 }
 
 .link {
-  color: #aaa;
+  color: #00796b;
   font-size: 0.8em;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
 .link:hover {
+  color: #004d40;
   text-decoration: underline;
 }
+
+/* Dark mode styles */
+/* body.dark-mode {
+  background-color: #181818;
+  color: #f0f2f5;
+}
+
+body.dark-mode .container {
+  background-color: #181818;
+}
+
+body.dark-mode .form-wrapper {
+  background: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .input {
+  background: #444;
+  color: #f0f2f5;
+  border: 1px solid #555;
+}
+
+body.dark-mode .input:focus {
+  border: 1px solid #50b16b;
+}
+
+body.dark-mode .button {
+  background: #50b16b;
+}
+
+body.dark-mode .button:hover {
+  background: #45a163;
+}
+
+body.dark-mode .link {
+  color: #50b16b;
+}
+
+body.dark-mode .link:hover {
+  color: #f0f2f5;
+}
+
+.dark-mode-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #00796b;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dark-mode-toggle:hover {
+  background: #004d40;
+} */ 
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 400px;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.company-logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.login-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px; /* Fixed width for the box */
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
