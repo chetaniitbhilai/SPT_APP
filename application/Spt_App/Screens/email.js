@@ -17,7 +17,7 @@ const Email = () => {
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch('http://192.168.1.36:5000/api/auth/email', {
+        const response = await fetch('http://192.168.1.4:5000/api/auth/email', {
           headers: {
             Authorization: `Bearer YOUR_AUTH_TOKEN`, // Replace with your actual token handling
           },

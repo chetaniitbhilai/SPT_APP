@@ -23,7 +23,7 @@ export default class CList extends Component {
 
   fetchHRData = async () => {
     try {
-      const response = await fetch('http://192.168.1.36:5000/api/getcdb'); // Replace with your computer IP
+      const response = await fetch('http://192.168.1.4:5000/api/getcdb'); // Replace with your computer IP
       const hrData = await response.json();
 
       // Format the data as needed for the table

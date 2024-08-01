@@ -1,7 +1,7 @@
 import User from '../models/user.model.js'; // Assuming the user model is named user.model.js
 import Data from '../models/data.model.js';
 
-export const getCompanies = async (req, res) => {
+export const getCompaniesCoordi = async (req, res) => {
   try {
     if (!req.userId) {
       return res.status(400).json({ error: 'User ID is required' });
@@ -18,7 +18,7 @@ export const getCompanies = async (req, res) => {
     const personName = user.name;
     // console.log(username);
     // Fetch the companies using the username
-    const data = await Data.find({ personName, status: 'assigned' });
+    const data = await Data.find({ personName, status: 'to assign' });
     console.log(data);
 
     const companies = data.map(item => ({

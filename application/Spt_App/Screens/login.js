@@ -9,7 +9,7 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://192.168.1.36:5000/api/auth/login", { //put your laptop ip address
+      const res = await fetch("http://192.168.1.4:5000/api/auth/login", { //put your laptop ip address
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
