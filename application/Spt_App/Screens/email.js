@@ -1,5 +1,6 @@
+// email.js (React Native)
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, TouchableOpacity, Alert, Linking } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 
 const Email = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,6 @@ const Email = () => {
           },
         });
         const data = await response.json();
-        console.log('Fetched emails:', data);
         setEmail(data.email);
         setEmail2(data.email_2);
       } catch (error) {
@@ -33,7 +33,7 @@ const Email = () => {
     fetchEmails();
   }, []);
 
-  const sendEmail = () => {
+  const sendEmail = async () => {
     let subject, body;
     switch (selectedTemplate) {
       case 'template1':
@@ -53,13 +53,28 @@ const Email = () => {
         return;
     }
 
-    const mailtoUrl = `mailto:${recipientEmail}?cc=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    Linking.openURL(mailtoUrl)
-      .then(() => console.log('Email app opened'))
-      .catch((error) => {
-        console.error('Error opening email app:', error);
-        Alert.alert('Error', 'Failed to open email app. Please try again later.');
+    try {
+      const response = await fetch('http://192.168.1.36:5000/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recipientEmail,
+          subject,
+          body,
+        }),
       });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Email sent successfully');
+      } else {
+        Alert.alert('Error', 'Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      Alert.alert('Error', 'An error occurred while sending email');
+    }
   };
 
   return (
