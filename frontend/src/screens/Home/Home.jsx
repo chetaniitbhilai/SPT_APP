@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
       <div className="main-content">
         Home
       </div>
+      {/* <Link to="/response-form">Go to Response Form</Link> */}
     </div>
   );
 };
