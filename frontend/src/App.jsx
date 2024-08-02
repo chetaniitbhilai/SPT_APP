@@ -6,6 +6,7 @@ import './App.css'
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './context/authContext';
 import Home from './screens/Home/Home';
+import ResponseForm from './screens/Form/ResponseForm';
 
 
 
@@ -28,6 +29,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={authUser ? <Home /> : <Navigate to={"/login"} />} />
       <Route path='/login' element={authUser ? <Navigate to="/" /> :<Login />} />
+      <Route path='/response-form' element={<ResponseForm />} />
     </Routes>
     <Toaster/>
    {/* <Login  verifyLogin={verifyLogin}/> */}

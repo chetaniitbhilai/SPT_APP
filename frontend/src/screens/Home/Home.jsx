@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
@@ -93,6 +94,7 @@ const Home = () => {
           </table>
         </div>
       </div>
+      {/* <Link to="/response-form">Go to Response Form</Link> */}
     </div>
   );
 };
