@@ -16,7 +16,7 @@ const Home = () => {
       contactNo: "123-456-7890",
       email: "john@companya.com",
       emailStatus: "Sent",
-      emailRemarksText: "koi bhi text ",
+      emailRemarksText: "koi bhi text",
       callRemarks: "Interested",
       CallRemarksText: "koi bhi call text",
       dateOfContact: "2024-08-01",
@@ -43,7 +43,7 @@ const Home = () => {
       <div className="sidebar">
         <img className="logo" src="frontend/src/screens/Home/CCPS.png" alt="Logo" />
         <nav className="nav">
-          <a href="#central-database" className="nav-link">Central Database</a>
+          {/* <a href="#central-database" className="nav-link">Central Database</a> */}
           <a href="#add-data" className="nav-link">Add Data</a>
         </nav>
         <button className="logout-button">Logout</button>
@@ -52,43 +52,46 @@ const Home = () => {
         </button>
       </div>
       <div className="main-content">
-        <h1>Home</h1>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Company</th>
-              <th>HR Name</th>
-              <th>Contact No.</th>
-              <th>Email</th>
-              <th>Email Status</th>
-              <th>Call Remarks</th>
-              <th>Date of Contact</th>
-              <th>Person Assigned</th>
-              <th>Department</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, index) => (
-              <tr key={index}>
-                <td>{row.company}</td>
-                <td>{row.hrName}</td>
-                <td>{row.contactNo}</td>
-                <td>{row.email}</td>
-                <td className="tooltip-container">
-                  {row.emailStatus}
-                  <span className="tooltip">{row.emailRemarksText}</span>
-                </td>
-                <td className="tooltip-container">
-                  {row.callRemarks}
-                  <span className="tooltip">{row.CallRemarksText}</span>
-                </td>
-                <td>{row.dateOfContact}</td>
-                <td>{row.personAssigned}</td>
-                <td>{row.department}</td>
+        {/* Default view set to Central Database */}
+        <div id="central-database">
+          <h1>Central Database</h1>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>HR Name</th>
+                <th>Contact No.</th>
+                <th>Email</th>
+                <th>Email Status</th>
+                <th>Call Remarks</th>
+                <th>Date of Contact</th>
+                <th>Person Assigned</th>
+                <th>Department</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tableData.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.company}</td>
+                  <td>{row.hrName}</td>
+                  <td>{row.contactNo}</td>
+                  <td>{row.email}</td>
+                  <td className="tooltip-container">
+                    {row.emailStatus}
+                    <span className="tooltip">{row.emailRemarksText}</span>
+                  </td>
+                  <td className="tooltip-container">
+                    {row.callRemarks}
+                    <span className="tooltip">{row.CallRemarksText}</span>
+                  </td>
+                  <td>{row.dateOfContact}</td>
+                  <td>{row.personAssigned}</td>
+                  <td>{row.department}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
