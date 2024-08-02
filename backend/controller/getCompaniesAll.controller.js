@@ -1,6 +1,6 @@
 import Data from "../models/data.model.js";
 
-export const getCentralDatabase = async (req, res) => {
+export const getCompaniesAll = async (req, res) => {
 	try {
 		// Retrieve all HR data from the database
 		const hrData = await Data.find({});
