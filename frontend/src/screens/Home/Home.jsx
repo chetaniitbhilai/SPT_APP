@@ -42,10 +42,10 @@ const Home = () => {
   return (
     <div className={`container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="sidebar">
-        <img className="logo" src="frontend/src/screens/Home/CCPS.png" alt="Logo" />
+        <img className="logo" src="./CCPS.png" alt="Logo" />
         <nav className="nav">
           <a href="#central-database" className="nav-link">Central Database</a>
-          <a href="#add-data" className="nav-link">Add Data</a>
+          <Link to="/response-form" className="nav-link">Add Data</Link>
         </nav>
         <button className="logout-button">Logout</button>
         <button className="dark-mode-toggle" onClick={toggleDarkMode}>
