@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import logo from "../../assets/CCPS.png";
 
 const Home = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -42,7 +43,7 @@ const Home = () => {
   return (
     <div className={`container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="sidebar">
-        <img className="logo" src="./CCPS.png" alt="Logo" />
+        <img className="logo" src={logo} alt="Logo" />
         <nav className="nav">
           <a href="#central-database" className="nav-link">Central Database</a>
           <Link to="/response-form" className="nav-link">Add Data</Link>
