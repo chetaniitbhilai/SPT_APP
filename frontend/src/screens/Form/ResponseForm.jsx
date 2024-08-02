@@ -50,7 +50,7 @@ const ResponseForm = () => {
 
     return (
         <div className={`container1 ${isDarkMode ? 'dark-mode_R' : 'light-mode_R'}`}>
-             <div className="sidebar">
+             <div className="sidebar_R">
         <img className="logo" src={logo} alt="Logo" />
         <nav className="nav">
             <a href="#central-database" className="nav-link">Central Database</a>
