@@ -19,7 +19,7 @@ export const getCompaniesCoordi = async (req, res) => {
     // console.log(username);
     // Fetch the companies using the username
     const data = await Data.find({ personName, status: 'to assign' });
-    console.log(data);
+    // console.log(data);
 
     const companies = data.map(item => ({
       _id: item._id,

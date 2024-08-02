@@ -17,7 +17,7 @@ const Task = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.1.4:5000/api/company/coordinator', {
+        const response = await fetch('http://192.168.97.10:5000/api/company/coordinator', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const Task = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.1.4:5000/api/auth/volunteer', {
+        const response = await fetch('http://192.168.97.10:5000/api/auth/volunteer', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const Task = () => {
       }
       const dateTime = getCurrentDateTimeString();
 
-      const response = await fetch(`http://192.168.1.4:5000/api/company/assign`, {
+      const response = await fetch(`http://192.168.97.10:5000/api/company/assign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

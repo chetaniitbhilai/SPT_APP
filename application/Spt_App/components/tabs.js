@@ -3,7 +3,7 @@ import { StyleSheet, Alert } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome, FontAwesome5, FontAwesome6, Fontisto, Ionicons } from "@expo/vector-icons";
 import CompanyList from '../Screens/companyList';
-import Task from '../Screens/task';
+import Task from '../Screens/task.js';
 import VolunteerList from '../Screens/volunteerList';
 import Profile from '../Screens/profile';
 import Email from '../Screens/email';
@@ -27,7 +27,7 @@ const Tabs = () => {
           throw new Error('No cookie found');
         }
         
-        const res = await fetch('http://192.168.1.4:5000/api/auth/profile', {
+        const res = await fetch('http://192.168.97.10:5000/api/auth/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

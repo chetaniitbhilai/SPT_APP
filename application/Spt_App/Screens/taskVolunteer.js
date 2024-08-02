@@ -53,7 +53,7 @@ const TaskVolunteer = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.1.4:5000/api/company/volunteer', {
+        const response = await fetch('http://192.168.97.10:5000/api/company/volunteer', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const TaskVolunteer = () => {
     console.log(currentCompany._id);
 
     try {
-      const result = await fetch(`http://192.168.1.4:5000/api/company/update`, {
+      const result = await fetch(`http://192.168.97.10:5000/api/company/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
