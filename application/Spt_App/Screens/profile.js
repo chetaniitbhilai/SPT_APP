@@ -19,7 +19,7 @@ const Profile = () => {
           throw new Error('No cookie found');
         }
         
-        const res = await fetch('http://192.168.1.4:5000/api/auth/profile', {
+        const res = await fetch('http://192.168.97.10:5000/api/auth/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
