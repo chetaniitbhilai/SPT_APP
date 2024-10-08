@@ -4,6 +4,7 @@ import { getProfile } from "../controller/getProfile.controller.js"; // .js is i
 import { authenticate } from "../middleware/authenticate.js";
 import { getVolunteer } from "../controller/getVolunteer.controller.js";
 import { getEmail } from "../controller/getEmail.controller.js";
+import { sendEmail } from "../controller/sendEmail.controller.js";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.post("/logout", logout);
 router.get("/profile", authenticate, getProfile);
 router.get("/volunteer", authenticate, getVolunteer);
 router.get("/email", authenticate, getEmail);
+router.get("send-email",authenticate,sendEmail);
 
 export default router;

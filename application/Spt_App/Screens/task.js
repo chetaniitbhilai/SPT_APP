@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ToastAndroid, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const IP_ADDRESS='192.168.97.10';
 
 const Task = () => {
   const [contacts, setContacts] = useState([]);
@@ -17,7 +18,7 @@ const Task = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.97.10:5000/api/company/coordinator', {
+        const response = await fetch(`http://${IP_ADDRESS}:5000/api/company/coordinator`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ const Task = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.97.10:5000/api/auth/volunteer', {
+        const response = await fetch(`http://${IP_ADDRESS}:5000/api/auth/volunteer`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -95,7 +96,7 @@ const Task = () => {
       }
       const dateTime = getCurrentDateTimeString();
 
-      const response = await fetch(`http://192.168.97.10:5000/api/company/assign`, {
+      const response = await fetch(`http://${IP_ADDRESS}:5000/api/company/assign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

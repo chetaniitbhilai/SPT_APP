@@ -9,6 +9,7 @@ import Profile from '../Screens/profile';
 import Email from '../Screens/email';
 import TaskVolunteer from '../Screens/taskVolunteer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const IP_ADDRESS='192.168.97.10';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const Tabs = () => {
           throw new Error('No cookie found');
         }
         
-        const res = await fetch('http://192.168.97.10:5000/api/auth/profile', {
+        const res = await fetch(`http://${IP_ADDRESS}:5000/api/auth/profile`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

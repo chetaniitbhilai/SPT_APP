@@ -120,6 +120,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, StyleSheet, FlatList, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const IP_ADDRESS='192.168.97.10';
 
 const VolunteerList = () => {
   const [volunteers, setVolunteers] = useState([]);
@@ -133,7 +134,7 @@ const VolunteerList = () => {
         }
 
         // Fetch user details and volunteers
-        const response = await fetch('http://192.168.97.10:5000/api/auth/volunteer', {
+        const response = await fetch(`http://${IP_ADDRESS}:5000/api/auth/volunteer`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

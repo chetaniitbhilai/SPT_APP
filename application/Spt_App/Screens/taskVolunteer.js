@@ -15,6 +15,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Linking from 'react-native/Libraries/Linking/Linking';
+const IP_ADDRESS='192.168.97.10';
 
 const TaskVolunteer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,7 +54,7 @@ const TaskVolunteer = () => {
           throw new Error('No cookie found');
         }
 
-        const response = await fetch('http://192.168.97.10:5000/api/company/volunteer', {
+        const response = await fetch(`http://${IP_ADDRESS}:5000/api/company/volunteer`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const TaskVolunteer = () => {
     console.log(currentCompany._id);
 
     try {
-      const result = await fetch(`http://192.168.97.10:5000/api/company/update`, {
+      const result = await fetch(`http://${IP_ADDRESS}:5000/api/company/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

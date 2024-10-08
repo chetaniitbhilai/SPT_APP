@@ -9,7 +9,7 @@ export const addData = async (req, res) => {
             personName,
             companyName,
             hrName,
-            hrNumber, 
+            hrNumber,   
             hrEmail,
             responsePhone,
             responsePhoneText,

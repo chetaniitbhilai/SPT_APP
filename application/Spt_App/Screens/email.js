@@ -1,6 +1,7 @@
 // email.js (React Native)
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
+const IP_ADDRESS='192.168.97.10';
 
 const Email = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ const Email = () => {
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch('http://10.10.238.33:5000/api/auth/email', {
+        const response = await fetch(`http://${IP_ADDRESS}:5000/api/auth/email`, {
           headers: {
             Authorization: `Bearer YOUR_AUTH_TOKEN`, // Replace with your actual token handling
           },
@@ -54,7 +55,7 @@ const Email = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.1.36:5000/api/send-email', {
+      const response = await fetch(`http://${IP_ADDRESS}:5000/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

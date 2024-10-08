@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text ,Alert } from 'react-native';
+import { StyleSheet, View, Text ,Alert, ScrollView } from 'react-native';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+const IP_ADDRESS='192.168.97.10';
 
 export default class CList extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class CList extends Component {
 
   fetchHRData = async () => {
     try {
-      const response = await fetch('http://192.168.97.10:5000/api/getcdb'); // Replace with your computer IP
+      const response = await fetch(`http://${IP_ADDRESS}:5000/api/getcdb`); // Replace with your computer IP
       const hrData = await response.json();
 
       // Format the data as needed for the table
@@ -45,6 +46,7 @@ export default class CList extends Component {
   render() {
     const state = this.state;
     return (
+      <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>CSE Liasioning</Text>
         <Table borderStyle={{ borderWidth: 1, borderRadius: 10 }}>
@@ -54,6 +56,7 @@ export default class CList extends Component {
           </TableWrapper>
         </Table>
       </View>
+      </ScrollView>
     )
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, SafeAreaView, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+const IP_ADDRESS='192.168.97.10';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://192.168.97.10:5000/api/auth/login", { //put your laptop ip address
+      const res = await fetch(`http://${IP_ADDRESS}:5000/api/auth/login`, { //put your laptop ip address
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })

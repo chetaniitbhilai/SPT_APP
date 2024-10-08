@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { Text, View,ScrollView,StyleSheet ,SafeAreaView } from 'react-native'
 import { Avatar, Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const IP_ADDRESS='192.168.97.10';
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -19,7 +20,7 @@ const Profile = () => {
           throw new Error('No cookie found');
         }
         
-        const res = await fetch('http://192.168.97.10:5000/api/auth/profile', {
+        const res = await fetch(`http://${IP_ADDRESS}:5000/api/auth/profile`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
