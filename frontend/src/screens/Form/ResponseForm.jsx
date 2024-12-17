@@ -57,7 +57,7 @@ const ResponseForm = () => {
             department: departmentRef.current.value,
             status: 'to assign',
         };
-
+        
         try {
             const response = await fetch("http://localhost:5000/api/query/add", {
                 method: 'POST',
